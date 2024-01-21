@@ -1,12 +1,13 @@
 package com.example.journalapp
 
-import java.sql.Timestamp
+import com.google.firebase.Timestamp
+
 
 data class Journal(
     val title:String,
     val desc:String,
-    val image:Int,
-    val timeAdded:Timestamp,
+    val image:String,
+    val timeAdded: Timestamp,
     val userId:String,
     val username:String
 )

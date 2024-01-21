@@ -24,6 +24,7 @@ class SignUpActivity : AppCompatActivity() {
         binding.createBtn.setOnClickListener{
             createUser()
         }
+        binding.progress.visibility=View.INVISIBLE
     }
 
     private fun createUser() {
@@ -33,7 +34,7 @@ class SignUpActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    binding.progress.visibility=View.GONE
+                    binding.progress.visibility=View.INVISIBLE
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("TAG", "createUserWithEmail:success")
                     val user = auth.currentUser
@@ -45,12 +46,12 @@ class SignUpActivity : AppCompatActivity() {
                     updateUI(user)
 
                 } else {
-                    binding.progress.visibility=View.GONE
+                    binding.progress.visibility=View.INVISIBLE
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext,
-                        "Authentication failed.",
+                        ""+task.exception?.message,
                         Toast.LENGTH_SHORT,
                     ).show()
                     updateUI(null)

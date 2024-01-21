@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:background="@{journal.image}"
+            android:background="@{Integer.parseInt(journal.image) }"
             android:cropToPadding="true"
             android:adjustViewBounds="true"
             android:id="@+id/image_view"/>
@@ -68,7 +68,7 @@
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@{journal.timeAdded.date}"
+    android:text="@{journal.timeAdded.toString()}"
     android:id="@+id/time_stamp"
     android:textStyle="italic"
     android:padding="10dp"/>

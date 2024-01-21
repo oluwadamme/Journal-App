@@ -21,12 +21,13 @@ import com.google.firebase.storage.StorageReference
 
 class JournalList : AppCompatActivity() {
     private lateinit var binding: ActivityJournalListBinding
-    private val collectionName="Journals"
+
     // firebase instances
     private lateinit var user:FirebaseUser
     private lateinit var firebaseAuth: FirebaseAuth
+    private val collectionName="Journals"
    private val db= FirebaseFirestore.getInstance()
-    val collectionReference=db.collection(collectionName)
+   private val collectionReference=db.collection(collectionName)
     private lateinit var storage:StorageReference
 
     private lateinit var journalList: MutableList<Journal>
