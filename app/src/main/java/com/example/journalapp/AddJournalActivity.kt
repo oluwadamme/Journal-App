@@ -8,9 +8,11 @@ import android.text.TextUtils
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.example.journalapp.databinding.ActivityAddJournalBinding
+import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -36,14 +38,19 @@ class AddJournalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        binding=DataBindingUtil. setContentView(this,R.layout.activity_add_journal)
-        firebaseAuth=FirebaseAuth.getInstance()
+        firebaseAuth= Firebase.auth
         storage = FirebaseStorage.getInstance().getReference()
         binding.apply {
             postProgress.visibility=View.INVISIBLE
             if (JournalUser.instance!=null){
-                currentUserId=JournalUser.instance?.userId.toString()
-                currentUserName=JournalUser.instance?.username.toString()
+                currentUserId=firebaseAuth.currentUser?.uid.toString()
+                currentUserName=firebaseAuth.currentUser?.displayName.toString()
                 postUsername.text=currentUserName
+            }
+            postCamera.setOnClickListener{
+                var intent=Intent(Intent.ACTION_GET_CONTENT)
+                intent.setType("image/*")
+                startActivityForResult(intent,1)
             }
             postSaveBtn.setOnClickListener(){
                 savePost()
@@ -98,5 +105,6 @@ class AddJournalActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         user= firebaseAuth.currentUser!!
+
     }
 }

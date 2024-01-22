@@ -3,6 +3,7 @@ package com.example.journalapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.journalapp.databinding.ActivityJournalListBinding
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -47,6 +49,7 @@ class JournalList : AppCompatActivity() {
         binding.recyclerView.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
         //
+        journalList= ArrayList<Journal>()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,13 +75,22 @@ class JournalList : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        collectionReference.whereEqualTo("userId",JournalUser.instance?.userId)
+        Log.i("TAGY",user.uid)
+        collectionReference.whereEqualTo("userId",user.uid)
             .get().addOnSuccessListener { it ->
                 if (!it.isEmpty){
-                    it.forEach {
-                      val journal:Journal=  it.toObject<Journal>()
+                    for (document in it){
+                        var journal=Journal(
+                            document.data.get("title").toString(),
+                            document.data.get("desc").toString(),
+                            document.data.get("image").toString(),
+                            document.data.get("timeAdded") as Timestamp,
+                            document.data.get("userId").toString(),
+                            document.data.get("username").toString()
+                        )
                         journalList.add(journal)
                     }
+
                     adapter=JournalRecyclerAdapter(journalList)
                     binding.recyclerView.adapter=adapter
                     adapter.notifyDataSetChanged()

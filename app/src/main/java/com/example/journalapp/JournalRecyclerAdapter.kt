@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.journalapp.databinding.JournalItemBinding
+import com.squareup.picasso.Picasso
 
 class JournalRecyclerAdapter(private val journalList: List<Journal>) :RecyclerView.Adapter<JournalRecyclerAdapter.MyViewHolder>(){
     class MyViewHolder(val binding: JournalItemBinding):RecyclerView.ViewHolder(binding.root) {
@@ -24,7 +25,9 @@ class JournalRecyclerAdapter(private val journalList: List<Journal>) :RecyclerVi
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val journal=journalList[position]
+        Picasso.get().load(journal.image).into(holder.binding.imageView);
         holder.binding.journal=journal
+//
 //        holder.binding.imageView.setImageResource(journal.image)
 //        holder.binding.descText.text=journal.desc
 //        holder.binding.titleText.text=journal.title

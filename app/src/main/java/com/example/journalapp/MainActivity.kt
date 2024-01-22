@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
             val pass= binding.loginPassword.text.toString().trim()
             auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(this) {
                 if (it.isSuccessful){
+                    val journal:JournalUser=JournalUser.instance!!
+                    journal.userId=auth.currentUser?.uid
+                    journal.username=auth.currentUser?.displayName
                     val intent=Intent(this, JournalList::class.java)
                     startActivity(intent)
                 }else{
